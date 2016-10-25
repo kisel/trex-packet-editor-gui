@@ -16,6 +16,7 @@ if (!hasProperty('mainClass')) {
 }
 
 repositories {
+    mavenLocal()
     mavenCentral()
 }
 
@@ -105,5 +106,43 @@ jar {
         attributes 'Main-Class': mainClassName
     }
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+}
+
+task createPom << {
+    pom {
+        project {
+            groupId 'com.xored'
+            artifactId 'TRexPacketCraftingTool'
+            version '1.0.0'
+
+            inceptionYear '2016'
+            licenses {
+                license {
+                    name 'The Apache Software License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        distribution 'repo'
+                }
+            }
+        }
+    }.writeTo("pom.xml")
+}
+
+apply plugin: 'javafx-gradle-plugin'
+
+buildscript {
+    dependencies {
+        classpath group: 'de.dynamicfiles.projects.gradle.plugins', name: 'javafx-gradle-plugin', version: '8.7.0'
+    }
+    repositories {
+        mavenLocal()
+        mavenCentral()
+
+    }
+}
+
+
+jfx {
+    mainClass = mainClassName
+    vendor = 'Xored'
 }
 

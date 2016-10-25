@@ -76,7 +76,10 @@ public class FieldEditorController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         view.setParentPane(fieldEditorPane);
         if (packetController.isInitialized()) {
-            Platform.runLater(this::newPacket);
+            if (configurationService.isStandaloneMode()) {
+                // TODO: needs to be moved out from controller to app initialization
+                Platform.runLater(this::newPacket);
+            }
         } else {
             view.displayConnectionError();
         }
